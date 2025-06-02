@@ -1,0 +1,53 @@
+/* crud.css */
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Títulos */
+h1 {
+    color: #1f2937; /* gris oscuro */
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+/* Botón de crear */
+a.btn-crear {
+    background-color: #2563eb; /* azul */
+    padding: 0.5rem 1.25rem;
+    color: white;
+    font-weight: 600;
+    border-radius: 9999px;
+    transition: background-color 0.2s ease-in-out;
+}
+a.btn-crear:hover {
+    background-color: #1d4ed8;
+}
+
+/* Tabla */
+.table-wrapper {
+    background: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+table th {
+    background-color: #f3f4f6;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    padding: 0.75rem;
+    text-align: left;
+    color: #374151;
+}
+
+table td {
+    padding: 0.75rem;
+    border-top: 1px solid #e5e7eb;
+}
+
+/* Enlaces de acción */
+a.text-blue-500:hover,
+button.text-red-500:hover {
+    text-decoration: underline;
+}

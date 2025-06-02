@@ -1,0 +1,12 @@
+
+@import "bootstrap/dist/css/bootstrap.min.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Aquí puedes poner estilos personalizados */
+body {
+  font-family: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+}
