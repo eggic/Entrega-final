@@ -45,17 +45,14 @@
       <ul class="navbar-nav ms-auto align-items-center">
 
         @auth
-        <!-- Notificaciones -->
-        <li class="nav-item me-3">
-          <a class="nav-link position-relative text-dark" href="#">
-            <i class="bi bi-bell" style="font-size: 1.5rem;"></i>
-            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-              3
-              <span class="visually-hidden">notificaciones sin leer</span>
-            </span>
-          </a>
-        </li>
-        @endauth
+<li class="nav-item me-3">
+  <a href="{{ route('notificaciones') }}" title="Ver notificaciones" class="btn btn-notificacion" style="font-size: 1.3rem; padding: 6px 12px; border-radius: 5px; background-color: #ec5ca8; color: white; border: none;">
+    🔔
+  </a>
+</li>
+@endauth
+
+
 
         <!-- Carrito -->
         <li class="nav-item me-3">
@@ -71,7 +68,7 @@
           <a class="nav-link dropdown-toggle" href="#" id="navbarPerfil" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Mi Perfil
           </a>
-          <ul class="dropdown-menu dropdown-menu-end">
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarPerfil">
             <li><a class="dropdown-item" href="#">Ver Perfil</a></li>
             <li><a class="dropdown-item" href="#">Editar Perfil</a></li>
           </ul>

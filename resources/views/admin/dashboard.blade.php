@@ -21,12 +21,13 @@
     {{-- Panel de botones --}}
     <div class="row justify-content-center mb-4 text-center">
         <div class="col-md-4 mb-3">
-            <a href="{{ route('admin.productos.create') }}" class="btn btn-outline-primary w-100 py-3 shadow">
-                ➕ Agregar Producto
-            </a>
+            <a href="{{ route('productos.index') }}" class="btn btn-outline-primary w-100 py-3 shadow">
+    ➕ Agregar Producto
+</a>
+
         </div>
         <div class="col-md-4 mb-3">
-            <a href="{{ route('admin.pedidos.index') }}" class="btn btn-outline-secondary w-100 py-3 shadow">
+            <a href="{{ route('productos.index1') }}" class="btn btn-outline-secondary w-100 py-3 shadow">
                 📦 Gestionar Pedidos
             </a>
         </div>

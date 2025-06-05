@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Notification;
 
 class NotificacionController extends Controller
 {
     public function index()
     {
-        // Aquí puedes obtener las notificaciones para el usuario autenticado y enviarlas a la vista
-        return view('notificaciones.index'); // Crea esta vista
+        $notifications = Notification::where('user_id', auth()->id())->orderBy('created_at', 'desc')->get();
+        return view('notificaciones', compact('notifications'));
     }
 }

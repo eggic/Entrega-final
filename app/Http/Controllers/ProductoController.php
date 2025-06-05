@@ -8,20 +8,17 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductoController extends Controller
 {
-    // Mostrar todos los productos
     public function index()
     {
         $productos = Producto::all();
         return view('productos.index', compact('productos'));
     }
 
-    // Mostrar el formulario para crear un nuevo producto
     public function create()
     {
         return view('productos.create');
     }
 
-    // Almacenar un nuevo producto
     public function store(Request $request)
     {
         $tiposPermitidos = [
@@ -40,17 +37,6 @@ class ProductoController extends Controller
             'imagen' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $request->validate([
-    'nombre' => 'required|string',
-    'descripcion' => 'required|string',
-    'precio' => 'required|numeric',
-    'stock' => 'required|integer',
-    'tipo' => 'required|string',
-    'imagen' => 'required|image',
-]);
-
-
-        // Guardar imagen en storage/app/public/productos
         $rutaImagen = $request->file('imagen')->store('productos', 'public');
 
         Producto::create([
@@ -65,7 +51,6 @@ class ProductoController extends Controller
         return redirect()->route('productos.index')->with('success', 'Producto creado correctamente.');
     }
 
-    // Mostrar productos filtrados por tipo "Pupusa"
     public function pupusas()
     {
         $productos = Producto::where('tipo', 'Pupusas')->get();
@@ -84,70 +69,60 @@ class ProductoController extends Controller
         return view('pedido_comida', compact('productos'));
     }
 
-    // Mostrar el formulario para editar un producto existente
     public function edit(Producto $producto)
     {
         return view('productos.edit', compact('producto'));
     }
 
-    // Actualizar un producto existente
     public function update(Request $request, Producto $producto)
-{
-    $tiposPermitidos = [
-        'Pupusas', 'Hamburguesas', 'Pollo', 'HotDog', 'Pizza', 'Tacos', 'Sushi', 'China', 'Arepas', 'CafeHelado',
-        'LicuadodeFresa', 'JugodeNaranja', 'Horchata', 'TeVerdeFrio', 'Smoothie', 'Soda', 'CafeEspresso', 'Malteadas',
-        'Gelatina', 'Flan', 'Dona', 'Brownie', 'Tres Leches', 'Cheesecake', 'Roll de Canela', 'Cupcake', 'Arroz con Leche',
-        "McDonald's", 'KFC', 'Burger King', 'Subway', 'Pizza Hut', "Domino's Pizza", 'Taco Bell', 'Popeyes', 'Starbucks'
-    ];
+    {
+        $tiposPermitidos = [
+            'Pupusas', 'Hamburguesas', 'Pollo', 'HotDog', 'Pizza', 'Tacos', 'Sushi', 'China', 'Arepas', 'CafeHelado',
+            'LicuadodeFresa', 'JugodeNaranja', 'Horchata', 'TeVerdeFrio', 'Smoothie', 'Soda', 'CafeEspresso', 'Malteadas',
+            'Gelatina', 'Flan', 'Dona', 'Brownie', 'Tres Leches', 'Cheesecake', 'Roll de Canela', 'Cupcake', 'Arroz con Leche',
+            "McDonald's", 'KFC', 'Burger King', 'Subway', 'Pizza Hut', "Domino's Pizza", 'Taco Bell', 'Popeyes', 'Starbucks'
+        ];
 
-    $request->validate([
-        'nombre' => 'required|string|max:255',
-        'descripcion' => 'nullable|string',
-        'precio' => 'required|numeric|min:0',
-        'stock' => 'required|integer|min:0',
-        'tipo' => 'required|in:' . implode(',', $tiposPermitidos),
-        'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-    ]);
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'descripcion' => 'nullable|string',
+            'precio' => 'required|numeric|min:0',
+            'stock' => 'required|integer|min:0',
+            'tipo' => 'required|in:' . implode(',', $tiposPermitidos),
+            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
 
-    if ($request->hasFile('imagen')) {
-        $file = $request->file('imagen');
+        if ($request->hasFile('imagen')) {
+            $file = $request->file('imagen');
 
-        if (!$file->isValid()) {
-            return back()->withErrors(['imagen' => 'El archivo de imagen no es válido.']);
-        }
-
-        try {
-            $rutaImagen = $file->store('productos', 'public');
-
-            if (!$rutaImagen) {
-                return back()->withErrors(['imagen' => 'Falló al guardar la imagen.']);
+            if (!$file->isValid()) {
+                return back()->withErrors(['imagen' => 'El archivo de imagen no es válido.']);
             }
 
-            // Borrar imagen anterior si existe
-            if ($producto->imagen && Storage::disk('public')->exists($producto->imagen)) {
-                Storage::disk('public')->delete($producto->imagen);
+            try {
+                $rutaImagen = $file->store('productos', 'public');
+
+                if ($producto->imagen && Storage::disk('public')->exists($producto->imagen)) {
+                    Storage::disk('public')->delete($producto->imagen);
+                }
+
+                $producto->imagen = $rutaImagen;
+            } catch (\Exception $e) {
+                return back()->withErrors(['imagen' => 'Error inesperado al subir imagen: ' . $e->getMessage()]);
             }
-
-            $producto->imagen = $rutaImagen;
-
-        } catch (\Exception $e) {
-            return back()->withErrors(['imagen' => 'Error inesperado al subir imagen: ' . $e->getMessage()]);
         }
+
+        $producto->update([
+            'nombre' => $request->nombre,
+            'descripcion' => $request->descripcion,
+            'precio' => $request->precio,
+            'stock' => $request->stock,
+            'tipo' => $request->tipo,
+        ]);
+
+        return redirect()->route('productos.index')->with('success', 'Producto actualizado con éxito.');
     }
 
-    $producto->nombre = $request->nombre;
-    $producto->descripcion = $request->descripcion;
-    $producto->precio = $request->precio;
-    $producto->stock = $request->stock;
-    $producto->tipo = $request->tipo;
-
-    $producto->save();
-
-    return redirect()->route('productos.index')->with('success', 'Producto actualizado con éxito.');
-}
-
-
-    // Eliminar un producto y su imagen
     public function destroy(Producto $producto)
     {
         if ($producto->imagen && Storage::disk('public')->exists($producto->imagen)) {
@@ -159,7 +134,6 @@ class ProductoController extends Controller
         return redirect()->route('productos.index')->with('success', 'Producto eliminado correctamente.');
     }
 
-    // Mostrar detalle de un producto
     public function show(Producto $producto)
     {
         return view('productos.show', compact('producto'));

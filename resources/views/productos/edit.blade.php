@@ -94,6 +94,7 @@
                         <option value="HotDog" {{ old('tipo', $producto->tipo) == 'HotDog' ? 'selected' : '' }}>Hot Dog</option>
                         <option value="Pizza" {{ old('tipo', $producto->tipo) == 'Pizza' ? 'selected' : '' }}>Pizza</option>
                         <option value="Tacos" {{ old('tipo', $producto->tipo) == 'Tacos' ? 'selected' : '' }}>Tacos</option>
+                        <option value="Sushi" {{ old('tipo', $producto->tipo) == 'Sushi' ? 'selected' : '' }}>Sushi</option>
                         <option value="China" {{ old('tipo', $producto->tipo) == 'China' ? 'selected' : '' }}>Comida China</option>
                         <option value="Arepas" {{ old('tipo', $producto->tipo) == 'Arepas' ? 'selected' : '' }}>Arepas</option>
                         <option value="CafeHelado" {{ old('tipo', $producto->tipo) == 'CafeHelado' ? 'selected' : '' }}>Café Helado</option>

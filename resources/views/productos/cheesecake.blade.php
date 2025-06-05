@@ -1,11 +1,21 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Cheesecake</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('css/tarjetas.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ asset('css/tarjetas.css') }}" />
+    <style>
+        .btn-pink {
+            background-color: #e91e63;
+            color: white;
+        }
+        .btn-pink:hover {
+            background-color: #c2185b;
+            color: white;
+        }
+    </style>
 </head>
 <body class="bg-light">
 
@@ -18,7 +28,7 @@
             @forelse($productos as $producto)
             <div class="mb-4">
                 <div class="card shadow-sm">
-                    <img src="{{ asset('storage/' . $producto->imagen) }}" class="img-pequena" alt="Imagen del producto">
+                    <img src="{{ asset('storage/' . $producto->imagen) }}" class="img-pequena" alt="Imagen del producto" />
                     <div class="card-body">
                         <h5 class="card-title">{{ $producto->nombre }}</h5>
                         <p class="card-text">{{ $producto->descripcion }}</p>
@@ -26,16 +36,15 @@
 
                         <form action="{{ route('carrito.agregar') }}" method="POST" class="d-flex flex-column align-items-center gap-2">
                             @csrf
-                            <input type="hidden" name="producto_id" value="{{ $producto->id }}">
+                            <input type="hidden" name="producto_id" value="{{ $producto->id }}" />
                             <div class="d-flex gap-2">
                                 <button type="button" class="btn btn-outline-secondary" onclick="cambiarCantidad({{ $loop->index }}, -1)">-</button>
                                 <span id="cantidad-{{ $loop->index }}">1</span>
                                 <button type="button" class="btn btn-outline-secondary" onclick="cambiarCantidad({{ $loop->index }}, 1)">+</button>
                             </div>
-                            <input type="hidden" name="cantidad" id="input-cantidad-{{ $loop->index }}" value="1">
-                            <button type="submit" class="btn btn-primary mt-2">Agregar al carrito</button>
+                            <input type="hidden" name="cantidad" id="input-cantidad-{{ $loop->index }}" value="1" />
+                            <button type="submit" class="btn btn-pink mt-2">Agregar al carrito</button>
                         </form>
-
                     </div>
                 </div>
             </div>
@@ -45,7 +54,7 @@
         </div>
 
         <div class="text-center mt-5">
-            <a href="{{ route('carrito.index') }}" class="btn btn-success px-5 py-2">Hacer pedido</a>
+            <a href="{{ route('carrito.index') }}" class="btn btn-secondary px-5 py-2">Hacer pedido</a>
         </div>
     </div>
 
@@ -55,8 +64,7 @@
             const inputCantidad = document.getElementById('input-cantidad-' + index);
 
             let cantidad = parseInt(cantidadSpan.textContent);
-            cantidad += cambio;
-            if (cantidad < 1) cantidad = 1;
+            cantidad = Math.max(1, cantidad + cambio);
 
             cantidadSpan.textContent = cantidad;
             inputCantidad.value = cantidad;

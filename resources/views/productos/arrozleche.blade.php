@@ -6,6 +6,16 @@
     <title>Arroz con Leche</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('css/tarjetas.css') }}" />
+    <style>
+        .btn-pink {
+            background-color: #e91e63;
+            color: white;
+        }
+        .btn-pink:hover {
+            background-color: #c2185b;
+            color: white;
+        }
+    </style>
 </head>
 <body class="bg-light">
 
@@ -33,7 +43,7 @@
                                 <button type="button" class="btn btn-outline-secondary" onclick="cambiarCantidad({{ $loop->index }}, 1)">+</button>
                             </div>
                             <input type="hidden" name="cantidad" id="input-cantidad-{{ $loop->index }}" value="1" />
-                            <button type="submit" class="btn btn-primary mt-2">Agregar al carrito</button>
+                            <button type="submit" class="btn btn-pink mt-2">Agregar al carrito</button>
                         </form>
                     </div>
                 </div>
@@ -44,7 +54,7 @@
         </div>
 
         <div class="text-center mt-5">
-            <a href="{{ route('carrito.index') }}" class="btn btn-success px-5 py-2">Hacer pedido</a>
+            <a href="{{ route('carrito.index') }}" class="btn btn-secondary px-5 py-2">Hacer pedido</a>
         </div>
     </div>
 
@@ -54,8 +64,7 @@
             const inputCantidad = document.getElementById('input-cantidad-' + index);
 
             let cantidad = parseInt(cantidadSpan.textContent);
-            cantidad += cambio;
-            if (cantidad < 1) cantidad = 1;
+            cantidad = Math.max(1, cantidad + cambio);
 
             cantidadSpan.textContent = cantidad;
             inputCantidad.value = cantidad;
